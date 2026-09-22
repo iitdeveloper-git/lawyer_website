@@ -35,5 +35,6 @@ The site build checks local links, page titles, structured data, the social imag
 ## Photo and contact handling
 
 - The real Rajasthan High Court photograph is licensed under CC BY-SA 4.0 and credited on the site. It is an illustrative court image, not Rakesh Puri’s portrait or an endorsement.
+- The home and About images are temporary AI-generated illustrations. Replace them with approved professional photography before treating them as factual depictions of the practice.
 - The WhatsApp form creates a URL containing the visitor’s entered information. Clicking **Continue in WhatsApp** shares that URL with WhatsApp. The site does not store form values, and the visitor chooses whether to send the chat message. The page asks visitors not to enter confidential case information.
 - The footer’s IITdeveloper credit links to `https://iitdeveloper.com/`.

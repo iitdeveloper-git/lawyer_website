@@ -12,6 +12,12 @@ const socialLinks = [
   ['LinkedIn', ''], ['Instagram', ''], ['Facebook', ''],
 ];
 
+function SocialIcon({ name }) {
+  if (name === 'LinkedIn') return <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.7 3A1.7 1.7 0 1 0 4.7 6.4 1.7 1.7 0 0 0 4.7 3ZM3.3 8h2.8v12H3.3zm5 0H11v1.6h.1c.4-.7 1.3-1.9 3-1.9 3.2 0 3.8 2 3.8 4.6V20h-2.8v-6.1c0-1.5 0-3.3-2-3.3s-2.3 1.6-2.3 3.2V20H8.3z"/></svg>;
+  if (name === 'Instagram') return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 21v-8h2.7l.4-3H14V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.3V10H8v3h2.7v8z"/></svg>;
+}
+
 function normalise(path) {
   return path === '/' ? '/' : `${path.replace(/\/+$/, '')}/`;
 }
@@ -35,7 +41,7 @@ function Footer() {
     <div><h3>Explore</h3><a href="/about/">About the Practice</a><a href="/professional-profile/">Professional Profile</a><a href="/courts-and-forums/">Courts &amp; Forums</a><a href="/insights/">Insights</a></div>
     <div><h3>Information</h3><a href="/contact/">Contact Chambers</a><a href="/disclaimer/">Disclaimer</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms/">Terms of Use</a></div>
     <div className="footer-contact"><h3>Contact</h3><a href="tel:+919414432758" className="footer-phone">+91 94144 32758</a><span>Rajasthan, India</span><p>Appointments and professional enquiries by phone.</p></div>
-  </div>{socialLinks.some(([, url]) => url.startsWith('https://')) && <div className="shell footer-social"><strong>Professional profiles</strong>{socialLinks.filter(([, url]) => url.startsWith('https://')).map(([name, url]) => <a key={name} href={url} target="_blank" rel="noopener noreferrer">{name}</a>)}</div>}
+  </div>{socialLinks.some(([, url]) => url.startsWith('https://')) && <div className="shell footer-social"><strong>Professional profiles</strong>{socialLinks.filter(([, url]) => url.startsWith('https://')).map(([name, url]) => <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${name} profile`}><SocialIcon name={name}/><span>{name}</span></a>)}</div>}
   <div className="shell footer-caution">Website information is general and does not constitute legal advice or create an advocate–client relationship. Please contact chambers to confirm information relevant to a particular matter.</div>
   <div className="shell footer-bottom"><span>© 2026 Rakesh Puri &amp; Associates</span><span>Developed by <a href="https://iitdeveloper.com/" target="_blank" rel="noopener noreferrer">IITdeveloper</a></span></div>
   <div className="shell photo-credit">Court photograph: <a href="https://commons.wikimedia.org/wiki/File:New_Rajasthan_High_Court_Building.jpg" target="_blank" rel="noopener noreferrer">TrendSPLEND / Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. Format unchanged.</div></footer>;
@@ -104,14 +110,31 @@ function ContactForm({ domNode }) {
   return <form id={attributes.id} className={attributes.class} onSubmit={submit}>{domToReact(domNode.children)}</form>;
 }
 
+function HeroVisual() {
+  return <div className="hero-visual hero-photo">
+    <img src="/placeholder-chambers.webp" alt="Illustrative advocate's chambers with law books and case files" width="1586" height="992" fetchPriority="high" />
+    <div className="hero-image-note">Illustrative image · Replace with approved chambers photograph</div>
+  </div>;
+}
+
+function EditorialPhoto() {
+  return <section className="editorial-photo-section" aria-label="Illustrative legal research photograph"><div className="shell editorial-photo-grid">
+    <figure><img src="/placeholder-research.webp" alt="Illustrative legal research desk with an open law book and case files" width="1448" height="1086" loading="lazy" decoding="async" /><figcaption>Illustrative image · Replace with an approved practice photograph</figcaption></figure>
+    <div><p className="eyebrow">PREPARATION &amp; PERSPECTIVE</p><h2>Every detail deserves careful attention.</h2><p>From the first review of a record to the final presentation of a matter, careful preparation gives advocacy its foundation.</p><a className="text-link" href="/contact/">Contact chambers <span aria-hidden="true">↗</span></a></div>
+  </div></section>;
+}
+
 function PageContent({ html }) {
-  return parse(html, { replace(node) { if (node.name === 'form' && node.attribs?.id === 'contact-form') return <ContactForm domNode={node} />; } });
+  return parse(html, { replace(node) {
+    if (node.name === 'form' && node.attribs?.id === 'contact-form') return <ContactForm domNode={node} />;
+    if (node.name === 'div' && node.attribs?.class?.split(' ').includes('hero-visual')) return <HeroVisual />;
+  } });
 }
 
 export function App({ path = '/' }) {
   const currentPath = normalise(path);
   const page = pages[currentPath] || pages['/404/'];
-  return <><a className="skip" href="#main">Skip to content</a><Header path={currentPath}/><main id="main"><PageContent html={page.content}/></main><Footer/><Acknowledgement/><FloatingActions/></>;
+  return <><a className="skip" href="#main">Skip to content</a><Header path={currentPath}/><main id="main" className={currentPath === '/' ? 'page-home' : ''}><PageContent html={page.content}/>{currentPath === '/about/' && <EditorialPhoto />}</main><Footer/><Acknowledgement/><FloatingActions/></>;
 }
 
 export { pages, normalise };

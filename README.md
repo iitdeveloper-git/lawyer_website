@@ -8,7 +8,9 @@
 
 A considered web presence built around **law, investigation, evidence and courtroom advocacy**.
 
-[View the website files](dist/) · [Practice areas](dist/practice-areas/) · [Professional profile](dist/professional-profile/) · [Contact page](dist/contact/)
+[Live website](https://rkpurilaw1.netlify.app/) · [Practice areas](https://rkpurilaw1.netlify.app/practice-areas/) · [Professional profile](https://rkpurilaw1.netlify.app/professional-profile/) · [Contact](https://rkpurilaw1.netlify.app/contact/)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fd1de754-f499-40a7-8f36-291b3541f07b/deploy-status)](https://app.netlify.com/projects/rkpurilaw1/deploys)
 
 </div>
 
@@ -16,7 +18,7 @@ A considered web presence built around **law, investigation, evidence and courtr
 
 ## § Project at a glance
 
-This repository contains a responsive, multi-page static website for **Rakesh Puri & Associates**. Its content introduces the practice, Rakesh Kumar Puri’s professional background, principal practice areas, courts and forums, and contact information. The visual language uses deep navy, warm ivory, restrained gold and editorial typography.
+This repository contains a responsive, 15-page **React 19** website for **Rakesh Puri & Associates**. Its content introduces the practice, Rakesh Kumar Puri’s professional background, principal practice areas, courts and forums, and contact information. Vite builds the client code; a Node script pre-renders each page to static HTML for direct links and search metadata.
 
 The website is deliberately informational. It does not promise results, publish testimonials or present an illustrative photograph as a portrait of Rakesh Puri. See [launch notes](LAUNCH_NOTES.md) for the page review and remaining client inputs, and [social bio options](SOCIAL_BIOS.md) for profile copy.
 
@@ -28,6 +30,7 @@ The website is deliberately informational. It does not promise results, publish 
 | ✉️ **Contact** | Published telephone number, WhatsApp enquiry handoff and contact page |
 | 🔎 **Discovery** | Page titles, descriptions, social preview image, canonical links, JSON-LD, sitemap and robots.txt |
 | ♿ **Usability** | Responsive layout, keyboard focus, semantic HTML and reduced-motion support |
+| 🖼️ **Imagery** | Two replaceable illustrative photos, plus a credited photograph of the Rajasthan High Court |
 
 ## 🗂️ Website pages
 
@@ -57,7 +60,14 @@ npm ci
 npm run dev
 ```
 
-Open the URL Vite prints, normally `http://localhost:5173/`. Run `npm run build` to generate and validate `dist/`, then `npm run preview` to inspect the production output.
+Open the URL Vite prints, normally `http://localhost:5173/`. To check the production output:
+
+```bash
+npm run build
+npm run preview
+```
+
+`npm run build` checks all 15 routes, local links, metadata, sitemap and the 404 page.
 
 ## 🚀 Deploy on Netlify
 
@@ -71,6 +81,8 @@ Connect this repository's `main` branch to Netlify. The root-level [`netlify.tom
 | Publish directory | `dist` |
 | Functions directory | Leave at the default; this site has no functions |
 | Build status | Active builds |
+
+The repository root is the project root, so **do not** enter `rakesh-puri-site` as the Base directory. `netlify.toml` is the source of truth for the build command and publish directory. Every push to `main` triggers a Netlify deploy when automatic builds are active.
 
 After a deploy, Netlify's **Deploy File Explorer** should show `index.html` directly at the top of the published files. If the site displays Netlify's 404 page, check that the project is connected to this repository and the `main` branch, and that the latest deploy succeeded.
 
@@ -90,6 +102,8 @@ After a deploy, Netlify's **Deploy File Explorer** should show `index.html` dire
 ├── scripts/prerender.mjs         # Writes route-specific HTML and sitemap
 ├── scripts/validate.mjs          # Checks output pages, links and metadata
 ├── public/                       # Images and favicon copied to the build
+│   ├── placeholder-chambers.webp # Temporary home hero image
+│   └── placeholder-research.webp # Temporary About page image
 ├── netlify.toml                  # Netlify build and publish settings
 ├── LAUNCH_NOTES.md               # Page review and required client approvals
 ├── SOCIAL_BIOS.md                # Suggested social-profile copy
@@ -100,11 +114,15 @@ Edit page content in `src/content/pages.json`, the shared layout and controls in
 
 ## 🎨 Design and imagery
 
-The site’s wordmark, large editorial headings and calm palette are intended to suit a senior legal practice. A genuine photograph of the **Rajasthan High Court building in Jodhpur** gives the site local context. It is labelled as court architecture; it is **not** a chambers photograph or a portrait of the advocate.
+The site’s wordmark, editorial headings, deep navy and warm ivory are intended to suit a senior legal practice. Two **AI-generated, temporary illustrative images** appear on the home and About pages. They do not depict the advocate, his office or a real case. The images are labelled as illustrative on the website.
+
+To replace them, put approved photographs in `public/` and update the image paths and alt text in `src/App.jsx` (`HeroVisual` and `EditorialPhoto`). Keep descriptive alt text and remove the temporary-image captions once the replacement images have been reviewed and approved. Then run `npm run build`.
+
+A genuine photograph of the **Rajasthan High Court building in Jodhpur** gives the site local context. It is labelled as court architecture; it is **not** a chambers photograph or a portrait of the advocate.
 
 **Photo credit:** [TrendSPLEND / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:New_Rajasthan_High_Court_Building.jpg), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The downloaded JPEG is used unchanged. Attribution also appears in the website footer.
 
-The professional-profile portrait area is intentionally reserved for an authentic photograph supplied and approved by Rakesh Kumar Puri.
+The professional-profile portrait area remains an RKP monogram until an authentic photograph is supplied and approved by Rakesh Kumar Puri.
 
 ## 📞 Contact behaviour
 
@@ -116,7 +134,7 @@ The professional-profile portrait area is intentionally reserved for an authenti
 
 ## ✅ Review before public launch
 
-The following are explicit handoff items, not assumptions to fill in silently:
+The following are handoff items for a fully approved public site:
 
 1. **Verify professional facts:** 35 years of police service, 5,000+ cases investigated or supervised, 300+ commendations, appointments and Bar Council details.
 2. **Resolve the chronology:** client-provided **2016 Bar Council enrolment**, **11 years of legal practice**, and **1979 education year/degree formatting** need confirmation together.
