@@ -1,7 +1,6 @@
 from pathlib import Path
 from html.parser import HTMLParser
-from urllib.parse import urlsplit
-import json, re
+import json, re, struct
 
 root=Path(__file__).parent/'dist'
 pages=list(root.rglob('index.html'))
@@ -13,6 +12,7 @@ for page in pages:
     assert title not in titles, title
     titles.add(title)
     assert '<meta name="description"' in html and '<link rel="canonical"' in html
+    assert '<meta property="og:image"' in html and '<meta name="twitter:image"' in html
     for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',html):
         json.loads(block)
     for value in re.findall(r'(?:href|src)="([^"]+)"',html):
@@ -21,4 +21,13 @@ for page in pages:
         target=root/value.lstrip('/')
         assert target.exists() or (target/'index.html').exists(), (page,value)
 assert (root/'sitemap.xml').exists() and (root/'robots.txt').exists()
-print(f'Validated {len(pages)} unique pages, local links, JSON-LD, sitemap and robots.')
+assert (root/'404.html').exists()
+draft=(root/'insights'/'understanding-investigation-records'/'index.html').read_text(encoding='utf-8')
+assert '<meta name="robots" content="noindex,follow">' in draft
+assert 'understanding-investigation-records' not in (root/'sitemap.xml').read_text(encoding='utf-8')
+png=(root/'social-card.png').read_bytes()
+assert png[:8] == b'\x89PNG\r\n\x1a\n'
+assert struct.unpack('>II',png[16:24]) == (1200,630)
+contact=(root/'contact'/'index.html').read_text(encoding='utf-8')
+assert 'Continue in WhatsApp' in contact and 'form is being prepared' not in contact
+print(f'Validated {len(pages)} unique pages, local links, JSON-LD, social metadata, sitemap and robots.')

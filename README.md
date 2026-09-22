@@ -18,15 +18,15 @@ A considered web presence built around **law, investigation, evidence and courtr
 
 This repository contains a responsive, multi-page static website for **Rakesh Puri & Associates**. Its content introduces the practice, Rakesh Kumar Puri’s professional background, principal practice areas, courts and forums, and contact information. The visual language uses deep navy, warm ivory, restrained gold and editorial typography.
 
-The website is deliberately informational. It does not promise results, publish testimonials or present an illustrative photograph as a portrait of Rakesh Puri.
+The website is deliberately informational. It does not promise results, publish testimonials or present an illustrative photograph as a portrait of Rakesh Puri. See [launch notes](LAUNCH_NOTES.md) for the page review and remaining client inputs, and [social bio options](SOCIAL_BIOS.md) for profile copy.
 
 | | What is included |
 |---|---|
 | 🏛️ **Practice** | Criminal law, constitutional writ matters and the wider practice-area index |
 | 📖 **Profile** | Biography, police-service journey, investigation background and education |
 | 🧭 **Experience** | Evidence, witnesses, forensic material, trial preparation, courts and forums |
-| ✉️ **Contact** | Published telephone number, WhatsApp shortcut and contact page |
-| 🔎 **Discovery** | Page titles, descriptions, canonical links, JSON-LD, sitemap and robots.txt |
+| ✉️ **Contact** | Published telephone number, WhatsApp enquiry handoff and contact page |
+| 🔎 **Discovery** | Page titles, descriptions, social preview image, canonical links, JSON-LD, sitemap and robots.txt |
 | ♿ **Usability** | Responsive layout, keyboard focus, semantic HTML and reduced-motion support |
 
 ## 🗂️ Website pages
@@ -69,9 +69,13 @@ Open `http://localhost:8000/` in a browser. If `python` is unavailable on Window
 │   ├── main.js                   # Menu, acknowledgement and form status
 │   ├── favicon.svg               # RK Puri site icon
 │   ├── rajasthan-high-court.jpg  # Licensed court photograph
+│   ├── social-card.png            # Open Graph / LinkedIn preview
 │   └── readme-banner.svg         # Repository cover art
 ├── build.py                      # Generates every page and SEO file
 ├── validate.py                   # Checks pages, links and structured data
+├── LAUNCH_NOTES.md               # Page review and required client approvals
+├── SOCIAL_BIOS.md                # Suggested social-profile copy
+├── tools/generate_social_card.py # Optional social-image generator
 └── dist/                         # Ready-to-serve static output
 ```
 
@@ -90,7 +94,8 @@ The professional-profile portrait area is intentionally reserved for an authenti
 - The phone link calls **+91 94144 32758**, the client-supplied professional number.
 - The floating green WhatsApp button opens a conversation with that number.
 - The floating Contact button opens `/contact/`.
-- **The enquiry form does not send messages yet.** It shows a clear status message until chambers approves an official email address and secure delivery method. Do not describe it as a working submission channel before that integration is completed.
+- The enquiry form prepares a WhatsApp link with the entered details. Choosing to continue shares those details with WhatsApp; the visitor then reviews and decides whether to send the chat message. The website does not store form contents.
+- An official email address has not yet been approved. The form does not claim to send email.
 
 ## ✅ Review before public launch
 
@@ -99,7 +104,7 @@ The following are explicit handoff items, not assumptions to fill in silently:
 1. **Verify professional facts:** 35 years of police service, 5,000+ cases investigated or supervised, 300+ commendations, appointments and Bar Council details.
 2. **Resolve the chronology:** client-provided **2016 Bar Council enrolment**, **11 years of legal practice**, and **1979 education year/degree formatting** need confirmation together.
 3. **Approve the official portrait**, any chamber images, the intended domain and a LinkedIn profile URL if one is to be shown.
-4. **Approve an official email and secure form endpoint** before enabling online enquiries.
+4. **Approve an official email and secure form endpoint** if email-based enquiries are required in addition to the working WhatsApp handoff.
 5. **Have the advocate review** the disclaimer, privacy wording, practice descriptions and any future articles against applicable professional rules.
 6. **Confirm production quality** with deployment-specific accessibility, performance and social-preview checks. The local validator does not replace those checks.
 
