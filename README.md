@@ -60,6 +60,21 @@ python -m http.server 8000 --directory dist
 
 Open `http://localhost:8000/` in a browser. If `python` is unavailable on Windows, use an installed Python 3 executable or the `py -3` launcher.
 
+## 🚀 Deploy on Netlify
+
+Connect this repository's `main` branch to Netlify. The root-level [`netlify.toml`](netlify.toml) runs the Python build and validation, then publishes `dist`.
+
+| Netlify build setting | Value |
+|---|---|
+| Base directory | Leave empty (repository root) |
+| Package directory | Leave empty |
+| Build command | `python3 build.py && python3 validate.py` |
+| Publish directory | `dist` |
+| Functions directory | Leave at the default; this site has no functions |
+| Build status | Active builds |
+
+After a deploy, Netlify's **Deploy File Explorer** should show `index.html` directly at the top of the published files. If the site displays Netlify's 404 page, check that the project is connected to this repository and the `main` branch, and that the latest deploy succeeded.
+
 ### Project structure
 
 ```text
@@ -72,6 +87,7 @@ Open `http://localhost:8000/` in a browser. If `python` is unavailable on Window
 │   ├── social-card.png            # Open Graph / LinkedIn preview
 │   └── readme-banner.svg         # Repository cover art
 ├── build.py                      # Generates every page and SEO file
+├── netlify.toml                  # Netlify build and publish settings
 ├── validate.py                   # Checks pages, links and structured data
 ├── LAUNCH_NOTES.md               # Page review and required client approvals
 ├── SOCIAL_BIOS.md                # Suggested social-profile copy
