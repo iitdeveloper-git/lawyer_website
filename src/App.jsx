@@ -76,7 +76,7 @@ function Acknowledgement() {
     <p className="eyebrow">VISITOR ACKNOWLEDGEMENT</p><h2 id="ack-title">Before you continue</h2>
     <p>This website contains general information about the professional background and practice of Rakesh Puri &amp; Associates. It is not an advertisement, solicitation, or legal advice. Visiting it does not create an advocate–client relationship.</p>
     <p>By continuing, you confirm that you are seeking information of your own accord. Please review the <a href="/disclaimer/">full disclaimer</a>.</p>
-    <button className="button button-dark" type="button" onClick={accept}>I understand</button>
+    <button id="ack-accept" className="button button-dark" type="button" onClick={accept}>I understand</button>
   </div></div>;
 }
 

@@ -67,7 +67,7 @@ npm run build
 npm run preview
 ```
 
-`npm run build` checks all 15 routes, local links, metadata, sitemap and the 404 page.
+`npm run build` checks all 15 routes, local links, metadata, sitemap and the 404 page. `npm run test:smoke` opens the built site in a local Chrome browser and checks navigation, the mobile menu, favicon assets, images, visitor acknowledgement and the WhatsApp enquiry form. Set `CHROME_PATH` if Chrome is installed outside the usual location.
 
 ## 🚀 Deploy on Netlify
 
@@ -104,6 +104,10 @@ After a deploy, Netlify's **Deploy File Explorer** should show `index.html` dire
 ├── public/                       # Images and favicon copied to the build
 │   ├── placeholder-chambers.webp # Temporary home hero image
 │   └── placeholder-research.webp # Temporary About page image
+│   ├── favicon.svg               # Vector browser icon
+│   ├── favicon.ico               # Classic browser fallback
+│   ├── favicon-32.png            # PNG browser fallback
+│   └── apple-touch-icon.png      # Home-screen icon
 ├── netlify.toml                  # Netlify build and publish settings
 ├── LAUNCH_NOTES.md               # Page review and required client approvals
 ├── SOCIAL_BIOS.md                # Suggested social-profile copy
@@ -123,6 +127,10 @@ A genuine photograph of the **Rajasthan High Court building in Jodhpur** gives t
 **Photo credit:** [TrendSPLEND / Wikimedia Commons](https://commons.wikimedia.org/wiki/File:New_Rajasthan_High_Court_Building.jpg), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The downloaded JPEG is used unchanged. Attribution also appears in the website footer.
 
 The professional-profile portrait area remains an RKP monogram until an authentic photograph is supplied and approved by Rakesh Kumar Puri.
+
+### Favicon
+
+The RK monogram is provided as SVG, PNG, ICO and Apple touch icon variants. All pages include the corresponding icon links. Edit `public/favicon.svg` and run `npm run icons` to regenerate the raster and ICO variants, then run `npm run build`.
 
 ## 📞 Contact behaviour
 
