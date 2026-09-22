@@ -49,26 +49,25 @@ The website is deliberately informational. It does not promise results, publish 
 
 ## 🛠️ Run locally
 
-The site uses **Python’s standard library** to generate HTML. It has no application-package installation step.
+The site is a **React 19 + Vite** project. Its 15 routes are pre-rendered during the production build, so each page has real HTML, page-specific metadata and a working direct URL.
 
 ```bash
 # From the repository root
-python build.py
-python validate.py
-python -m http.server 8000 --directory dist
+npm ci
+npm run dev
 ```
 
-Open `http://localhost:8000/` in a browser. If `python` is unavailable on Windows, use an installed Python 3 executable or the `py -3` launcher.
+Open the URL Vite prints, normally `http://localhost:5173/`. Run `npm run build` to generate and validate `dist/`, then `npm run preview` to inspect the production output.
 
 ## 🚀 Deploy on Netlify
 
-Connect this repository's `main` branch to Netlify. The root-level [`netlify.toml`](netlify.toml) runs the Python build and validation, then publishes `dist`.
+Connect this repository's `main` branch to Netlify. The root-level [`netlify.toml`](netlify.toml) runs the React build and validation, then publishes `dist`.
 
 | Netlify build setting | Value |
 |---|---|
 | Base directory | Leave empty (repository root) |
 | Package directory | Leave empty |
-| Build command | `python3 build.py && python3 validate.py` |
+| Build command | `npm run build` |
 | Publish directory | `dist` |
 | Functions directory | Leave at the default; this site has no functions |
 | Build status | Active builds |
@@ -81,21 +80,23 @@ After a deploy, Netlify's **Deploy File Explorer** should show `index.html` dire
 .
 ├── assets/
 │   ├── style.css                 # Design and responsive styles
-│   ├── main.js                   # Menu, acknowledgement and form status
 │   ├── favicon.svg               # RK Puri site icon
 │   ├── rajasthan-high-court.jpg  # Licensed court photograph
 │   ├── social-card.png            # Open Graph / LinkedIn preview
 │   └── readme-banner.svg         # Repository cover art
-├── build.py                      # Generates every page and SEO file
+├── src/App.jsx                   # React shell and interactive components
+├── src/content/pages.json        # Content and metadata for all 15 routes
+├── src/main.jsx                  # Browser hydration entry
+├── scripts/prerender.mjs         # Writes route-specific HTML and sitemap
+├── scripts/validate.mjs          # Checks output pages, links and metadata
+├── public/                       # Images and favicon copied to the build
 ├── netlify.toml                  # Netlify build and publish settings
-├── validate.py                   # Checks pages, links and structured data
 ├── LAUNCH_NOTES.md               # Page review and required client approvals
 ├── SOCIAL_BIOS.md                # Suggested social-profile copy
-├── tools/generate_social_card.py # Optional social-image generator
-└── dist/                         # Ready-to-serve static output
+└── dist/                         # Generated static output
 ```
 
-Edit content in `build.py` and styling in `assets/style.css`, then run `python build.py` again. `dist/` is committed so the current site can also be served directly by static hosting.
+Edit page content in `src/content/pages.json`, the shared layout and controls in `src/App.jsx`, and styling in `assets/style.css`. Then run `npm run build`. `dist/` is committed so static hosting can serve the current output directly.
 
 ## 🎨 Design and imagery
 
@@ -124,7 +125,7 @@ The following are explicit handoff items, not assumptions to fill in silently:
 5. **Have the advocate review** the disclaimer, privacy wording, practice descriptions and any future articles against applicable professional rules.
 6. **Confirm production quality** with deployment-specific accessibility, performance and social-preview checks. The local validator does not replace those checks.
 
-The site currently points canonical metadata and its sitemap to the intended domain, `https://rkpurilaw.com`. Update `DOMAIN` in `build.py` if the approved production domain differs.
+The site currently points canonical metadata and its sitemap to the intended domain, `https://rkpurilaw.com`. Update the domain in `scripts/prerender.mjs` if the approved production domain differs.
 
 ## ⚖️ Professional-information note
 

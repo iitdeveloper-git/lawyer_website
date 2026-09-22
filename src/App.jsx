@@ -1,0 +1,117 @@
+import React, { useEffect, useRef, useState } from 'react';
+import parse, { domToReact } from 'html-react-parser';
+import pages from './content/pages.json';
+
+const nav = [
+  ['Home', '/'], ['About', '/about/'], ['Practice Areas', '/practice-areas/'],
+  ['Experience', '/investigation-expertise/'], ['Courts & Forums', '/courts-and-forums/'],
+  ['Insights', '/insights/'], ['Contact', '/contact/'],
+];
+// Add only URLs approved by the practice. Empty values stay hidden.
+const socialLinks = [
+  ['LinkedIn', ''], ['Instagram', ''], ['Facebook', ''],
+];
+
+function normalise(path) {
+  return path === '/' ? '/' : `${path.replace(/\/+$/, '')}/`;
+}
+
+function Header({ path }) {
+  const [open, setOpen] = useState(false);
+  return <header className="site-header"><div className="shell header-inner">
+    <a className="brand" href="/" aria-label="Rakesh Puri & Associates home"><span className="brand-monogram">RP</span><span><strong>RAKESH PURI <em>&amp;</em> ASSOCIATES</strong><small>ADVOCATES &amp; LEGAL CONSULTANTS</small></span></a>
+    <button className="menu-toggle" type="button" aria-controls="site-nav" aria-expanded={open} aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen(!open)}><span/><span/><span/></button>
+    <nav id="site-nav" className={`site-nav${open ? ' open' : ''}`} aria-label="Main navigation">
+      {nav.map(([label, href]) => <a key={href} href={href} className={path === href ? 'active' : ''} onClick={() => setOpen(false)}>{label}</a>)}
+      <a className="nav-cta" href="/contact/">Contact Chambers</a>
+    </nav>
+  </div></header>;
+}
+
+function Footer() {
+  return <footer className="site-footer"><div className="shell footer-grid">
+    <div className="footer-about"><div className="footer-mark">RP<span>.</span></div><h2>Rakesh Puri &amp; Associates</h2><p className="footer-descriptor">Advocates &amp; Legal Consultants</p><p>A practice informed by decades of investigation experience and focused on careful legal advocacy in Rajasthan.</p></div>
+    <div><h3>Principal Practice</h3><a href="/practice-areas/criminal-law/">Criminal Law</a><a href="/practice-areas/writ-jurisdiction/">Constitutional Writs</a><a href="/investigation-expertise/">Investigation &amp; Evidence</a><a href="/practice-areas/">All Practice Areas</a></div>
+    <div><h3>Explore</h3><a href="/about/">About the Practice</a><a href="/professional-profile/">Professional Profile</a><a href="/courts-and-forums/">Courts &amp; Forums</a><a href="/insights/">Insights</a></div>
+    <div><h3>Information</h3><a href="/contact/">Contact Chambers</a><a href="/disclaimer/">Disclaimer</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms/">Terms of Use</a></div>
+    <div className="footer-contact"><h3>Contact</h3><a href="tel:+919414432758" className="footer-phone">+91 94144 32758</a><span>Rajasthan, India</span><p>Appointments and professional enquiries by phone.</p></div>
+  </div>{socialLinks.some(([, url]) => url.startsWith('https://')) && <div className="shell footer-social"><strong>Professional profiles</strong>{socialLinks.filter(([, url]) => url.startsWith('https://')).map(([name, url]) => <a key={name} href={url} target="_blank" rel="noopener noreferrer">{name}</a>)}</div>}
+  <div className="shell footer-caution">Website information is general and does not constitute legal advice or create an advocate–client relationship. Please contact chambers to confirm information relevant to a particular matter.</div>
+  <div className="shell footer-bottom"><span>© 2026 Rakesh Puri &amp; Associates</span><span>Developed by <a href="https://iitdeveloper.com/" target="_blank" rel="noopener noreferrer">IITdeveloper</a></span></div>
+  <div className="shell photo-credit">Court photograph: <a href="https://commons.wikimedia.org/wiki/File:New_Rajasthan_High_Court_Building.jpg" target="_blank" rel="noopener noreferrer">TrendSPLEND / Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>. Format unchanged.</div></footer>;
+}
+
+function Acknowledgement() {
+  const [visible, setVisible] = useState(false);
+  const dialog = useRef(null);
+  useEffect(() => {
+    try { setVisible(localStorage.getItem('rkp_ack_v1') !== 'yes'); }
+    catch { setVisible(true); }
+  }, []);
+  useEffect(() => {
+    if (!visible) return;
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialog.current?.querySelector('button')?.focus();
+    return () => { document.body.style.overflow = oldOverflow; };
+  }, [visible]);
+  function trapFocus(event) {
+    if (event.key !== 'Tab') return;
+    const focusable = [...dialog.current.querySelectorAll('a, button')];
+    const first = focusable[0], last = focusable.at(-1);
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  }
+  function accept() {
+    try { localStorage.setItem('rkp_ack_v1', 'yes'); } catch { /* session only */ }
+    setVisible(false);
+  }
+  return <div className="ack" ref={dialog} role="dialog" aria-modal="true" aria-labelledby="ack-title" hidden={!visible} onKeyDown={trapFocus}><div className="ack-card">
+    <p className="eyebrow">VISITOR ACKNOWLEDGEMENT</p><h2 id="ack-title">Before you continue</h2>
+    <p>This website contains general information about the professional background and practice of Rakesh Puri &amp; Associates. It is not an advertisement, solicitation, or legal advice. Visiting it does not create an advocate–client relationship.</p>
+    <p>By continuing, you confirm that you are seeking information of your own accord. Please review the <a href="/disclaimer/">full disclaimer</a>.</p>
+    <button className="button button-dark" type="button" onClick={accept}>I understand</button>
+  </div></div>;
+}
+
+function FloatingActions() {
+  return <div className="floating-actions">
+    <a className="float-whatsapp" href="https://wa.me/919414432758" target="_blank" rel="noopener noreferrer" aria-label="Contact chambers on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 .8A15.1 15.1 0 0 0 3 23.5L.9 31l7.7-2A15.2 15.2 0 1 0 16 .8Zm0 27.5c-2.4 0-4.7-.7-6.7-2l-.5-.3-4.5 1.2 1.2-4.4-.3-.5A12.3 12.3 0 1 1 16 28.3Zm6.8-9.2c-.4-.2-2.3-1.1-2.6-1.2-.4-.1-.6-.2-.9.2s-1 1.2-1.2 1.4c-.2.2-.5.3-.9.1-2.4-1.2-4-2.2-5.6-4.9-.4-.6.4-.6 1.1-2 .2-.3.1-.6 0-.8l-1.2-2.8c-.3-.7-.6-.6-.9-.6h-.7c-.3 0-.8.1-1.2.5s-1.6 1.5-1.6 3.7 1.7 4.4 1.9 2.3 3.8 4.2 8.1 5.3c2.1.9 2.9 1 4 1 1.3 0 2.3-.8 2.6-1.6.3-.8.3-1.5.2-1.6-.1-.2-.4-.3-.8-.5Z"/></svg><span>WhatsApp</span></a>
+    <a className="float-contact" href="/contact/" aria-label="Open contact page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg><span>Contact</span></a>
+  </div>;
+}
+
+function ContactForm({ domNode }) {
+  const attributes = domNode.attribs || {};
+  function submit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    const lines = [
+      'Professional enquiry for Rakesh Puri & Associates',
+      `Name: ${String(data.get('name') || '').trim()}`,
+      `Phone: ${String(data.get('phone') || '').trim()}`,
+      `Matter category: ${String(data.get('category') || '').trim()}`,
+      `Message: ${String(data.get('message') || '').trim()}`,
+    ];
+    const email = String(data.get('email') || '').trim();
+    if (email) lines.splice(3, 0, `Email: ${email}`);
+    const status = form.querySelector('#form-status');
+    if (status) status.textContent = 'Opening WhatsApp. Review your message there before sending.';
+    window.location.assign(`https://wa.me/919414432758?text=${encodeURIComponent(lines.join('\n'))}`);
+  }
+  return <form id={attributes.id} className={attributes.class} onSubmit={submit}>{domToReact(domNode.children)}</form>;
+}
+
+function PageContent({ html }) {
+  return parse(html, { replace(node) { if (node.name === 'form' && node.attribs?.id === 'contact-form') return <ContactForm domNode={node} />; } });
+}
+
+export function App({ path = '/' }) {
+  const currentPath = normalise(path);
+  const page = pages[currentPath] || pages['/404/'];
+  return <><a className="skip" href="#main">Skip to content</a><Header path={currentPath}/><main id="main"><PageContent html={page.content}/></main><Footer/><Acknowledgement/><FloatingActions/></>;
+}
+
+export { pages, normalise };

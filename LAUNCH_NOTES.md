@@ -29,7 +29,7 @@ The site build checks local links, page titles, structured data, the social imag
 ### Needed for richer contact and social presence
 
 5. **Official chamber address and email** if they should be public. At present, only the supplied phone number is published. The enquiry form hands off to WhatsApp and does not send email.
-6. **Approved profile URLs** for LinkedIn, Instagram and Facebook. `SOCIAL_LINKS` near the top of `build.py` is ready for these links; only populated HTTPS links appear in the footer. See [SOCIAL_BIOS.md](SOCIAL_BIOS.md) for suggested bios.
+6. **Approved profile URLs** for LinkedIn, Instagram and Facebook. `socialLinks` near the top of `src/App.jsx` is ready for these links; only populated HTTPS links appear in the footer. See [SOCIAL_BIOS.md](SOCIAL_BIOS.md) for suggested bios.
 7. **Editorial material:** advocate-reviewed insights with author, sources, publication dates and review dates. The reserved article page is not indexed until approved copy exists.
 
 ## Photo and contact handling

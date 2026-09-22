@@ -33,5 +33,5 @@ These options are written for an Indian advocate’s informational presence. The
 ## Link in bio and website links
 
 - Once the domain is live, use `https://rkpurilaw.com/professional-profile/` as the main professional bio link. Use `https://rkpurilaw.com/insights/` for reviewed commentary when articles are published.
-- Add the **approved** LinkedIn, Instagram and Facebook profile URLs to `SOCIAL_LINKS` in `build.py`, then run `python build.py` and `python validate.py`. The footer will show only links with a configured HTTPS URL.
+- Add the **approved** LinkedIn, Instagram and Facebook profile URLs to `socialLinks` near the top of `src/App.jsx`, then run `npm run build`. The footer will show only links with a configured HTTPS URL.
 - Do not create or display a social-profile URL by guessing a username. Do not publish the 5,000+, 300+, 11-year or education-year claims in bios until the client confirms them.
